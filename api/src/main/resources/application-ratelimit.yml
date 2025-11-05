@@ -1,0 +1,51 @@
+# Rate Limiting Configuration
+rate-limit:
+  enabled: true
+  
+  # Default rate limits (requests per minute)
+  defaults:
+    global: 1000
+    per-ip: 100
+    per-user: 200
+  
+  # Endpoint-specific rate limits
+  endpoints:
+    get-all-employees:
+      requests: 20
+      window-seconds: 60
+      
+    get-employee-by-id:
+      requests: 50
+      window-seconds: 60
+      
+    search-employees:
+      requests: 30
+      window-seconds: 60
+      
+    get-highest-salary:
+      requests: 40
+      window-seconds: 60
+      
+    get-top-earners:
+      requests: 40
+      window-seconds: 60
+      
+    create-employee:
+      requests: 10
+      window-seconds: 60
+      
+    delete-employee:
+      requests: 5
+      window-seconds: 60
+
+  # Redis configuration for distributed rate limiting (optional)
+  redis:
+    enabled: false
+    host: localhost
+    port: 6379
+    
+  # Headers to include in rate limit responses
+  headers:
+    remaining: "X-Rate-Limit-Remaining"
+    retry-after: "X-Rate-Limit-Retry-After-Seconds"
+    limit: "X-Rate-Limit-Limit"
