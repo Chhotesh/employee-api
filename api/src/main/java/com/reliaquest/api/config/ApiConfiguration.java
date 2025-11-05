@@ -24,6 +24,6 @@ public class ApiConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(rateLimitInterceptor)
-                .addPathPatterns("/api/v1/employee/**"); // Apply to all employee endpoints
+                .addPathPatterns("/api/v1/employee/**");
     }
 }

@@ -32,7 +32,7 @@ public class EmployeeApiClient {
 
     private final RestTemplate restTemplate;
     
-    @Value("${employee.api.base-url:http://localhost:8112/api/v1/employee}")
+    @Value("${employee.api.base-url}")
     private String baseUrl;
 
     @Retryable(
@@ -45,7 +45,7 @@ public class EmployeeApiClient {
         log.info("Fetching all employees from mock API");
         try {
             ResponseEntity<ApiResponse<List<Employee>>> response = restTemplate.exchange(
-                    baseUrl, 
+                    baseUrl + "1",
                     HttpMethod.GET, 
                     null, 
                     new ParameterizedTypeReference<ApiResponse<List<Employee>>>() {}

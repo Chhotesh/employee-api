@@ -15,7 +15,6 @@ public final class EmployeeConstants {
     public static final String EMPLOYEE_AGE_REQUIRED = "Employee age is required";
     public static final String EMPLOYEE_AGE_MIN_INVALID = "Employee age must be at least 16";
     public static final String EMPLOYEE_AGE_MAX_INVALID = "Employee age must be at most 75";
-    public static final String EMPLOYEE_AGE_INVALID = "Employee age must be between 16 and 75";
     public static final String EMPLOYEE_TITLE_REQUIRED = "Employee title is required and cannot be empty";
     public static final String EMPLOYEE_NOT_FOUND = "Employee with id %s not found";
     public static final String NO_EMPLOYEES_WITH_SALARY = "No employees found with salary information";
@@ -32,6 +31,13 @@ public final class EmployeeConstants {
     public static final String FAILED_TO_GET_HIGHEST_SALARY = "Failed to get highest salary";
     public static final String FAILED_TO_GET_TOP_EARNERS = "Failed to get top earning employees";
     public static final String RATE_LIMIT_EXCEEDED = "Rate limit exceeded. Please try again later.";
+
+    //Rate Limit related constants
+    public static final String GET_ALL_EMPLOYEES_ENDPOINT = "GET_ALL_EMPLOYEES";
+    public static final String CREATE_EMPLOYEE_ENDPOINT = "CREATE_EMPLOYEE";
+    public static final String DELETE_EMPLOYEE_ENDPOINT = "DELETE_EMPLOYEE";
+    public static final String GET_EMPLOYEE_BY_ID_ENDPOINT = "GET_EMPLOYEE_BY_ID";
+    public static final String SEARCH_EMPLOYEES_ENDPOINT = "SEARCH_EMPLOYEES";
     
     private EmployeeConstants() {
     }

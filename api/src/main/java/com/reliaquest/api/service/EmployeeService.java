@@ -7,13 +7,14 @@ import com.reliaquest.api.exception.EmployeeServiceException;
 import com.reliaquest.api.model.Employee;
 import com.reliaquest.api.model.EmployeeInput;
 import com.reliaquest.api.validator.EmployeeValidator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -37,7 +38,7 @@ public class EmployeeService {
     public List<Employee> searchEmployeesByName(String searchString) {
         validator.validateSearchString(searchString);
         log.info("Searching employees by name: {}", searchString);
-        
+
         try {
             List<Employee> allEmployees = getAllEmployees();
             List<Employee> filteredEmployees = allEmployees.stream()

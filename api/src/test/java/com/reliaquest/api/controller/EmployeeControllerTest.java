@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -33,12 +34,14 @@ class EmployeeControllerTest {
 
     private Employee testEmployee;
     private List<Employee> testEmployees;
+    private final String EMPLOYEE_ID = "ea1095eb-40de-41aa-8c17-83b164f64af3";
+    private final String EMPLOYEE_NAME_SEARCH = "Prahalad";
 
     @BeforeEach
     void setUp() {
-        testEmployee = new Employee("1", "John Doe", 75000, 30, "Software Engineer", "john@company.com");
-        Employee employee2 = new Employee("2", "Jane Smith", 85000, 28, "Senior Developer", "jane@company.com");
-        Employee employee3 = new Employee("3", "Bob Johnson", 95000, 35, "Tech Lead", "bob@company.com");
+        testEmployee = new Employee(EMPLOYEE_ID, EMPLOYEE_NAME_SEARCH, 75000, 30, "Software Engineer", "prathod@1.com");
+        Employee employee2 = new Employee("320bff3a-dbf3-4554-b2a4-dd672cc1dd67", "Rahul", 85000, 28, "Senior Developer", "rahul@2.com");
+        Employee employee3 = new Employee("e3c04ede-ddd7-437b-952a-a02eddad1a02", "Vijay", 95000, 35, "Tech Lead", "vijay@3.com");
         testEmployees = Arrays.asList(testEmployee, employee2, employee3);
     }
 
@@ -54,32 +57,33 @@ class EmployeeControllerTest {
 
     @Test
     void getEmployeeById_ShouldReturnEmployee_WhenExists() {
-        when(employeeService.getEmployeeByIdOrThrow("1")).thenReturn(testEmployee);
+        when(employeeService.getEmployeeByIdOrThrow(EMPLOYEE_ID)).thenReturn(testEmployee);
 
-        ResponseEntity<Employee> response = employeeController.getEmployeeById("1");
+        ResponseEntity<Employee> response = employeeController.getEmployeeById(EMPLOYEE_ID);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("John Doe", response.getBody().getEmployeeName());
+        assertEquals(EMPLOYEE_NAME_SEARCH, response.getBody().getEmployeeName());
     }
 
     @Test
-    void getEmployeeById_ShouldReturnNotFound_WhenNotExists() {
-        when(employeeService.getEmployeeByIdOrThrow("999")).thenThrow(new EmployeeNotFoundException("Employee not found"));
+    void getEmployeeById_ShouldThrowException_WhenNotExists() {
+        String notPresentId = "e3c04ede-ddd7-437b-952a-a02eddad1a09";
+        when(employeeService.getEmployeeByIdOrThrow(notPresentId)).thenThrow(new EmployeeNotFoundException("Employee not found"));
 
-        ResponseEntity<Employee> response = employeeController.getEmployeeById("999");
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertThrows(EmployeeNotFoundException.class, () -> {
+            employeeController.getEmployeeById(notPresentId);
+        });
     }
 
     @Test
     void getEmployeesByNameSearch_ShouldReturnFilteredEmployees() {
-        List<Employee> filteredEmployees = Arrays.asList(testEmployee, testEmployees.get(2)); // John Doe and Bob Johnson
-        when(employeeService.searchEmployeesByName("John")).thenReturn(filteredEmployees);
+        List<Employee> filteredEmployees = Arrays.asList(testEmployee);
+        when(employeeService.searchEmployeesByName(EMPLOYEE_NAME_SEARCH)).thenReturn(filteredEmployees);
 
-        ResponseEntity<List<Employee>> response = employeeController.getEmployeesByNameSearch("John");
+        ResponseEntity<List<Employee>> response = employeeController.getEmployeesByNameSearch(EMPLOYEE_NAME_SEARCH);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, response.getBody().size()); // John Doe and Bob Johnson
+        assertEquals(1, response.getBody().size());
     }
 
     @Test
@@ -96,27 +100,27 @@ class EmployeeControllerTest {
     void getHighestSalaryOfEmployees_ShouldReturnNotFound_WhenNoEmployees() {
         when(employeeService.getHighestSalary()).thenThrow(new EmployeeNotFoundException("No employees found"));
 
-        ResponseEntity<Integer> response = employeeController.getHighestSalaryOfEmployees();
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertThrows(EmployeeNotFoundException.class, () -> {
+            employeeController.getHighestSalaryOfEmployees();
+        });
     }
 
     @Test
     void getTopTenHighestEarningEmployeeNames_ShouldReturnSortedNames() {
-        List<String> topNames = Arrays.asList("Bob Johnson", "Jane Smith", "John Doe");
+        List<String> topNames = Arrays.asList("Vijay", "Rahul", "Prahalad");
         when(employeeService.getTopTenHighestEarningEmployeeNames()).thenReturn(topNames);
 
         ResponseEntity<List<String>> response = employeeController.getTopTenHighestEarningEmployeeNames();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(3, response.getBody().size());
-        assertEquals("Bob Johnson", response.getBody().get(0)); // Highest salary first
+        assertEquals("Vijay", response.getBody().get(0)); // Highest salary first
     }
 
     @Test
     void createEmployee_ShouldReturnCreatedEmployee_WhenValidInput() {
         EmployeeInput input = new EmployeeInput("New Employee", 70000, 25, "Developer");
-        Employee createdEmployee = new Employee("4", "New Employee", 70000, 25, "Developer", "new@company.com");
+        Employee createdEmployee = new Employee("b4616677-8d24-4b34-aeb5-462568c1a120", "New Employee", 70000, 25, "Developer", "new@company.com");
 
         when(employeeService.createEmployee(any(EmployeeInput.class))).thenReturn(createdEmployee);
 
@@ -128,21 +132,23 @@ class EmployeeControllerTest {
 
     @Test
     void deleteEmployeeById_ShouldReturnEmployeeName_WhenSuccessful() {
-        when(employeeService.deleteEmployeeById("1")).thenReturn("John Doe");
+        when(employeeService.deleteEmployeeById(EMPLOYEE_ID)).thenReturn(EMPLOYEE_NAME_SEARCH);
 
-        ResponseEntity<String> response = employeeController.deleteEmployeeById("1");
+        ResponseEntity<String> response = employeeController.deleteEmployeeById(EMPLOYEE_ID);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("John Doe", response.getBody());
+        assertEquals(EMPLOYEE_NAME_SEARCH, response.getBody());
     }
 
     @Test
-    void deleteEmployeeById_ShouldReturnNotFound_WhenEmployeeNotExists() {
-        when(employeeService.deleteEmployeeById("999")).thenThrow(new EmployeeNotFoundException("Employee not found"));
+    void deleteEmployeeById_ShouldThrowException_WhenEmployeeNotExists() {
+        String nonExistentId = "b4616677-8d24-4b34-aeb5-462568c1a120";
+        when(employeeService.deleteEmployeeById(nonExistentId)).thenThrow(new EmployeeNotFoundException("Employee not found"));
 
-        ResponseEntity<String> response = employeeController.deleteEmployeeById("999");
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        // Test that the controller throws the exception (GlobalExceptionHandler will handle it in real app)
+        assertThrows(EmployeeNotFoundException.class, () -> {
+            employeeController.deleteEmployeeById(nonExistentId);
+        });
     }
 
     // UUID Validation Tests

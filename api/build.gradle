@@ -9,7 +9,6 @@ dependencies {
     
     // Rate Limiting Dependencies
     implementation 'com.github.vladimir-bukhtoyarov:bucket4j-core:7.6.0'
-    implementation 'com.github.vladimir-bukhtoyarov:bucket4j-jcache:7.6.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

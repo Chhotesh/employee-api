@@ -24,7 +24,7 @@ class EmployeeInputValidationTest {
 
     @Test
     void validateEmployeeInput_ShouldPass_WhenAllFieldsValid() {
-        EmployeeInput input = new EmployeeInput("John Doe", 50000, 30, "Software Engineer");
+        EmployeeInput input = new EmployeeInput("Prahalad", 50000, 30, "Software Engineer");
         
         Set<ConstraintViolation<EmployeeInput>> violations = validator.validate(input);
         
@@ -45,7 +45,7 @@ class EmployeeInputValidationTest {
 
     @Test
     void validateEmployeeInput_ShouldFail_WhenSalaryIsNull() {
-        EmployeeInput input = new EmployeeInput("John Doe", null, 30, "Software Engineer");
+        EmployeeInput input = new EmployeeInput("Prahalad", null, 30, "Software Engineer");
         
         Set<ConstraintViolation<EmployeeInput>> violations = validator.validate(input);
         
@@ -57,7 +57,7 @@ class EmployeeInputValidationTest {
 
     @Test
     void validateEmployeeInput_ShouldFail_WhenSalaryIsTooLow() {
-        EmployeeInput input = new EmployeeInput("John Doe", 0, 30, "Software Engineer");
+        EmployeeInput input = new EmployeeInput("Prahalad", 0, 30, "Software Engineer");
         
         Set<ConstraintViolation<EmployeeInput>> violations = validator.validate(input);
         
@@ -69,7 +69,7 @@ class EmployeeInputValidationTest {
 
     @Test
     void validateEmployeeInput_ShouldFail_WhenAgeIsNull() {
-        EmployeeInput input = new EmployeeInput("John Doe", 50000, null, "Software Engineer");
+        EmployeeInput input = new EmployeeInput("Prahalad", 50000, null, "Software Engineer");
         
         Set<ConstraintViolation<EmployeeInput>> violations = validator.validate(input);
         
@@ -81,7 +81,7 @@ class EmployeeInputValidationTest {
 
     @Test
     void validateEmployeeInput_ShouldFail_WhenAgeTooYoung() {
-        EmployeeInput input = new EmployeeInput("John Doe", 50000, 15, "Software Engineer");
+        EmployeeInput input = new EmployeeInput("Prahalad", 50000, 15, "Software Engineer");
         
         Set<ConstraintViolation<EmployeeInput>> violations = validator.validate(input);
         
@@ -93,7 +93,7 @@ class EmployeeInputValidationTest {
 
     @Test
     void validateEmployeeInput_ShouldFail_WhenAgeTooOld() {
-        EmployeeInput input = new EmployeeInput("John Doe", 50000, 76, "Software Engineer");
+        EmployeeInput input = new EmployeeInput("Prahalad", 50000, 76, "Software Engineer");
         
         Set<ConstraintViolation<EmployeeInput>> violations = validator.validate(input);
         
@@ -105,7 +105,7 @@ class EmployeeInputValidationTest {
 
     @Test
     void validateEmployeeInput_ShouldFail_WhenTitleIsBlank() {
-        EmployeeInput input = new EmployeeInput("John Doe", 50000, 30, "");
+        EmployeeInput input = new EmployeeInput("Prahalad", 50000, 30, "");
         
         Set<ConstraintViolation<EmployeeInput>> violations = validator.validate(input);
         

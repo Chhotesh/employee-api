@@ -1,6 +1,7 @@
 package com.reliaquest.api.interceptor;
 
 import com.reliaquest.api.config.RateLimitConfig;
+import com.reliaquest.api.constants.EmployeeConstants;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
 import jakarta.servlet.http.HttpServletRequest;
@@ -89,15 +90,15 @@ public class RateLimitInterceptor implements HandlerInterceptor {
         String path = request.getRequestURI();
         
         return switch (method + " " + path) {
-            case "GET /api/v1/employee" -> "GET_ALL_EMPLOYEES";
-            case "POST /api/v1/employee" -> "CREATE_EMPLOYEE";
+            case "GET /api/v1/employee" -> EmployeeConstants.GET_ALL_EMPLOYEES_ENDPOINT;
+            case "POST /api/v1/employee" -> EmployeeConstants.CREATE_EMPLOYEE_ENDPOINT;
             default -> {
                 if (path.matches("/api/v1/employee/[^/]+") && "GET".equals(method)) {
-                    yield "GET_EMPLOYEE_BY_ID";
+                    yield EmployeeConstants.GET_EMPLOYEE_BY_ID_ENDPOINT;
                 } else if (path.matches("/api/v1/employee/[^/]+") && "DELETE".equals(method)) {
-                    yield "DELETE_EMPLOYEE";
+                    yield EmployeeConstants.DELETE_EMPLOYEE_ENDPOINT;
                 } else if (path.contains("/search")) {
-                    yield "SEARCH_EMPLOYEES";
+                    yield EmployeeConstants.SEARCH_EMPLOYEES_ENDPOINT;
                 } else {
                     yield "DEFAULT";
                 }
