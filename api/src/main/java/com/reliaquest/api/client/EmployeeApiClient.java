@@ -45,7 +45,7 @@ public class EmployeeApiClient {
         log.info("Fetching all employees from mock API");
         try {
             ResponseEntity<ApiResponse<List<Employee>>> response = restTemplate.exchange(
-                    baseUrl + "1",
+                    baseUrl,
                     HttpMethod.GET, 
                     null, 
                     new ParameterizedTypeReference<ApiResponse<List<Employee>>>() {}
